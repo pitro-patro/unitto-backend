@@ -14,7 +14,7 @@ public class RedisRepository {
     @Autowired
     public RedisRepository(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
-        valueOperations = redisTemplate.opsForValue();
+        this.valueOperations = redisTemplate.opsForValue();
     }
 
     public void insertKeyValue(String key, String value){
