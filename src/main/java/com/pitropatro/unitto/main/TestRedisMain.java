@@ -7,6 +7,7 @@ import com.pitropatro.unitto.service.RedisService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class TestRedisMain {
 
@@ -17,7 +18,11 @@ public class TestRedisMain {
         ArrayList<Integer> include_numbers = new ArrayList<>(Arrays.asList(1,2,3));
         ArrayList<Integer> exclude_numbers = new ArrayList<>(Arrays.asList(4,5,6));
 
-        ArrayList<Integer> uniqueNumber = new ArrayList<>();
+        HashMap<Integer, Boolean> uniqueNumber = new HashMap<>();
+        //ArrayList<Integer> uniqueNumber = new ArrayList<>();
+        for(Integer number: include_numbers){
+            uniqueNumber.put(number, true);
+        }
 
         Random random = new Random();
 
@@ -26,12 +31,18 @@ public class TestRedisMain {
 
         while(uniqueNumber.size() < 6){
             int randomNumber = (random.nextInt((maxNumber - minNumber) + 1) + minNumber);
-            if(!uniqueNumber.contains(randomNumber)){
-                uniqueNumber.add(randomNumber);
+            if((uniqueNumber.get(randomNumber)==null) && !exclude_numbers.contains(randomNumber)){
+                uniqueNumber.put(randomNumber, true);
             }
         }
-        Collections.sort(uniqueNumber);
-        System.out.println(uniqueNumber);
+
+        ArrayList<Integer> uniqueNumberAsList = new ArrayList<>(uniqueNumber.keySet());
+
+        Collections.sort(uniqueNumberAsList);
+        System.out.println(uniqueNumberAsList);
+        //String string1 = uniqueNumber.stream().map(String::valueOf).collect(Collectors.joining("-"));
+        //System.out.println(string1);
+
         /*ctx = new AnnotationConfigApplicationContext(RedisConfiguration.class);
         RedisService redisService = ctx.getBean("redisService", RedisService.class);
 

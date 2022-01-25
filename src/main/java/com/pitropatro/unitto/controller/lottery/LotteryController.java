@@ -1,5 +1,6 @@
 package com.pitropatro.unitto.controller.lottery;
 
+import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberConfirmDto;
 import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberDto;
 import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberRequestDto;
 import com.pitropatro.unitto.service.LotteryService;
@@ -28,5 +29,10 @@ public class LotteryController {
         return lotteryService.getUniqueNumber(
                 lotteryUniqueNumberRequestDto.getInclude_numbers(),
                 lotteryUniqueNumberRequestDto.getExclude_numbers());
+    }
+
+    @RequestMapping(value="/unique-numbers-confirm", method = RequestMethod.POST)
+    public void getUniqueNumberConfirm(@RequestBody LotteryUniqueNumberConfirmDto lotteryUniqueNumberConfirmDto){
+        lotteryService.confirmUniqueNumber(lotteryUniqueNumberConfirmDto.getLottery_numbers(), lotteryUniqueNumberConfirmDto.getConfirm());
     }
 }

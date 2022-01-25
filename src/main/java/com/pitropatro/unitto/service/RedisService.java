@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class RedisService {
 
-    @Autowired
     private RedisRepository redisRepository;
+
+    @Autowired
+    public RedisService(RedisRepository redisRepository) {
+        this.redisRepository = redisRepository;
+    }
 
     public void insertKeyValue(String key, String value){
 
