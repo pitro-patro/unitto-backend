@@ -5,11 +5,9 @@ import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberDto;
 import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberRequestDto;
 import com.pitropatro.unitto.service.LotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/lottery")
@@ -32,6 +30,7 @@ public class LotteryController {
     }
 
     @RequestMapping(value="/unique-numbers-confirm", method = RequestMethod.POST)
+    @ResponseStatus(value= HttpStatus.OK)
     public void getUniqueNumberConfirm(@RequestBody LotteryUniqueNumberConfirmDto lotteryUniqueNumberConfirmDto){
         lotteryService.confirmUniqueNumber(lotteryUniqueNumberConfirmDto.getLottery_numbers(), lotteryUniqueNumberConfirmDto.getConfirm());
     }
