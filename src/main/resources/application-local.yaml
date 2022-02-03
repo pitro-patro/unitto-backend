@@ -8,4 +8,6 @@ spring:
 
 redis:
   function:
+    # timeout은 redis가 아닌 service에서 설정하는게 맞을 것 같음...
     timeout: 120
+

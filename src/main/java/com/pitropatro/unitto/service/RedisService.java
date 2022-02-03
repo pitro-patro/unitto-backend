@@ -4,6 +4,7 @@ import com.pitropatro.unitto.repository.RedisRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+// TODO: 삭제하기
 @Service
 public class RedisService {
 

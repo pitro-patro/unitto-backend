@@ -11,4 +11,5 @@ import java.util.List;
 @AllArgsConstructor
 public class LotteryUniqueNumberDto {
     private List<Integer> unique_lottery_numbers;
+    // TODO: expire time 넣어주기
 }

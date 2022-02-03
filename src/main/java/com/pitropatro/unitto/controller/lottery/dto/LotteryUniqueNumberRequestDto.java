@@ -8,6 +8,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class LotteryUniqueNumberRequestDto {
-    private List<Integer> include_numbers;
+    private List<Integer> includeNumbers;
     private List<Integer> exclude_numbers;
 }
