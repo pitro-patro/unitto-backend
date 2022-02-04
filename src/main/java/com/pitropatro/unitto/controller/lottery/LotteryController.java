@@ -7,7 +7,10 @@ import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberRequestDt
 import com.pitropatro.unitto.service.LotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/lottery")
@@ -21,7 +24,9 @@ public class LotteryController {
     }
 
     @RequestMapping(value="/unique-numbers", method= RequestMethod.POST)
-    public LotteryUniqueNumberDto getUniqueNumber(@RequestBody LotteryUniqueNumberRequestDto lotteryUniqueNumberRequestDto){
+    public LotteryUniqueNumberDto getUniqueNumber(@Valid @RequestBody LotteryUniqueNumberRequestDto lotteryUniqueNumberRequestDto, Errors errors){
+
+
 
         return lotteryService.getUniqueNumber(
                 lotteryUniqueNumberRequestDto.getIncludeNumbers(),
