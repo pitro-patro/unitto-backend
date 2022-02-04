@@ -10,14 +10,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class LotteryService {
-    // TODO: redisService 삭제하기
     private final RedisRepository redisRepository;
-    private final RedisService redisService;
 
     @Autowired
-    public LotteryService(RedisRepository redisRepository, RedisService redisService) {
+    public LotteryService(RedisRepository redisRepository) {
         this.redisRepository = redisRepository;
-        this.redisService = redisService;
     }
 
     public LotteryUniqueNumberDto getUniqueNumber(List<Integer> includeNumbers, List<Integer> exclude_numbers) {
@@ -28,12 +25,10 @@ public class LotteryService {
             List<Integer> uniqueNumber = getRandomLotteryNumberWithOptions(includeNumbers, exclude_numbers);
             String uniqueNumberInString = uniqueNumber.stream().map(String::valueOf).collect(Collectors.joining("-"));
             if(redisRepository.getValueByKey(uniqueNumberInString) == null){
-                System.out.println("It is Unique Number!");
                 redisRepository.insertKeyValueWithTimeout(uniqueNumberInString, false, 300);
                 redisRepository.insertUniquNumberWithTimeout(uniqueNumberInString);
                 return new LotteryUniqueNumberDto(uniqueNumber);
             }
-            System.out.println(uniqueNumberInString+" already exists!! Find new Number");
         }while(true);
 
     }
