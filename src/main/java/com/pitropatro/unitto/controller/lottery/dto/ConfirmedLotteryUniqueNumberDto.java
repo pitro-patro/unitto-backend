@@ -9,7 +9,6 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class LotteryUniqueNumberConfirmDto {
+public class ConfirmedLotteryUniqueNumberDto {
     private List<Integer> lotteryNumbers;
-    private Boolean confirm;
 }

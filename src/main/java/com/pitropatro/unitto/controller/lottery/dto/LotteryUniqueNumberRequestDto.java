@@ -9,5 +9,5 @@ import java.util.List;
 @AllArgsConstructor
 public class LotteryUniqueNumberRequestDto {
     private List<Integer> includeNumbers;
-    private List<Integer> exclude_numbers;
+    private List<Integer> excludeNumbers;
 }

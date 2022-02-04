@@ -14,10 +14,6 @@ public class RedisRepository {
     private final RedisTemplate<String, String> redisTemplate;
     private final ValueOperations<String, String> valueOperations;
 
-    // TODO: timeout은 Service layer에서 직접 넣어주게 바꾸자
-    @Value("${redis.function.timeout}")
-    private int timeout;
-
     @Autowired
     public RedisRepository(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
@@ -33,10 +29,8 @@ public class RedisRepository {
         return valueOperations.get(key);
     }
 
-    // TODO: timeout은 사용하는 측에서 넣어주는게 맞는 것 같다.
-    // TODO: insertKeyValueWithTimeout()로 바꾸기
-    public void insertUniquNumberWithTimeout(String key){
-        valueOperations.set(key, "false", timeout, TimeUnit.SECONDS);
+    public void insertKeyValueWithTimeout(String key, String value, int timeout){
+        valueOperations.set(key, value, timeout, TimeUnit.SECONDS);
     }
 
     public void deleteValueByKey(String key) {
