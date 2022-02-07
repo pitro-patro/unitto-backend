@@ -11,6 +11,6 @@ import java.util.List;
 public class LotteryUniqueNumberRequestDto {
     @Size(max=5)
     private List<Integer> includeNumbers;
-    @Size(max=5)
+    @Size(max=39)
     private List<Integer> excludeNumbers;
 }

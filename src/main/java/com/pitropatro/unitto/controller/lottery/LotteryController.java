@@ -4,6 +4,7 @@ import com.pitropatro.unitto.controller.lottery.dto.ConfirmedLotteryUniqueNumber
 import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberConfirmDto;
 import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberDto;
 import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberRequestDto;
+import com.pitropatro.unitto.exception.LotteryNumberOptionSizeException;
 import com.pitropatro.unitto.service.LotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,10 @@ public class LotteryController {
     @RequestMapping(value="/unique-numbers", method= RequestMethod.POST)
     public LotteryUniqueNumberDto getUniqueNumber(@Valid @RequestBody LotteryUniqueNumberRequestDto lotteryUniqueNumberRequestDto, Errors errors){
 
-
+        // LotteryUniqueNumberRequestDto Validation 처리
+        if(errors.hasErrors()){
+            throw new LotteryNumberOptionSizeException();
+        }
 
         return lotteryService.getUniqueNumber(
                 lotteryUniqueNumberRequestDto.getIncludeNumbers(),
@@ -36,8 +40,6 @@ public class LotteryController {
     @RequestMapping(value="/unique-numbers-confirm", method = RequestMethod.POST)
     @ResponseStatus(value= HttpStatus.OK)
     public ConfirmedLotteryUniqueNumberDto getUniqueNumberConfirm(@RequestBody LotteryUniqueNumberConfirmDto lotteryUniqueNumberConfirmDto){
-        // TODO: Response에 확정된 로또 번호 추가해서 리턴해주기
-        // TODO: + 취소할시 처리할 방법 필요
 
         return lotteryService.confirmUniqueNumber(
                 lotteryUniqueNumberConfirmDto.getLotteryNumbers(),
