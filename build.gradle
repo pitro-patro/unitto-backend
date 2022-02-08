@@ -25,6 +25,9 @@ dependencies {
 	testImplementation('org.projectlombok:lombok')
 	annotationProcessor('org.projectlombok:lombok')
 	testAnnotationProcessor('org.projectlombok:lombok')
+
+	// Validator
+	implementation('org.hibernate.validator:hibernate-validator')
 }
 
 test {

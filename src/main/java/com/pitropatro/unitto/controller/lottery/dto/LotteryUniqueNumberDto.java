@@ -10,5 +10,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class LotteryUniqueNumberDto {
-    private List<Integer> unique_lottery_numbers;
+    private List<Integer> uniqueLotteryNumbers;
+    private int expireTime;
 }

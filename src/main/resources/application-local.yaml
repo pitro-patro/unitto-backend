@@ -6,6 +6,7 @@ spring:
     host: 127.0.0.1
     port: 6379
 
-redis:
-  function:
+service:
+  lottery:
     timeout: 120
+    max_try: 100

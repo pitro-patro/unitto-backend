@@ -11,11 +11,8 @@ import java.util.concurrent.TimeUnit;
 @Repository
 public class RedisRepository {
 
-    private RedisTemplate<String, String> redisTemplate;
-    private ValueOperations<String, String> valueOperations;
-
-    @Value("${redis.function.timeout}")
-    private int timeout;
+    private final RedisTemplate<String, String> redisTemplate;
+    private final ValueOperations<String, String> valueOperations;
 
     @Autowired
     public RedisRepository(RedisTemplate<String, String> redisTemplate) {
@@ -25,17 +22,20 @@ public class RedisRepository {
 
     public void insertKeyValue(String key, String value){
         valueOperations.set(key, value);
+        //return void
     }
 
     public String getValueByKey(String key){
         return valueOperations.get(key);
     }
 
-    public void insertUniquNumberWithTimeout(String key){
-        valueOperations.set(key, "false", timeout, TimeUnit.SECONDS);
+    public void insertKeyValueWithTimeout(String key, String value, int timeout){
+        valueOperations.set(key, value, timeout, TimeUnit.SECONDS);
+        //return void
     }
 
-    public void deleteValueByKey(String key) {
-        redisTemplate.delete(key);
+    public boolean deleteValueByKey(String key) {
+        return redisTemplate.delete(key);
+        // return null(값 없는 경우), true(삭제 성공시)
     }
 }
