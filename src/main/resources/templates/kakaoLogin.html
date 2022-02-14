@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kakao Login Test</title>
+</head>
+<body>
+    <h1>Kakao Login</h1>
+    <span th:if="${userId == null}">
+        <!-- TODO : client_id 값 따로 빼기? -->
+        <a href="https://kauth.kakao.com/oauth/authorize?client_id={카카오API KEY}&redirect_uri=http://localhost:8080/login/oauth2/code/kakao&response_type=code">
+            <img src = "/img/kakao_login_medium_narrow.png">
+        </a>
+    </span>
+    <span th:if="${userId!=null}">
+        <h2 th:text="${userId}"></h2>
+        <!-- TODO : url 변경 필요 -->
+        <form name="logout" action="http://localhost:8080/login/logout">
+            <input type="submit" value="로그아웃"/>
+        </form>
+    </span>
+</body>
+</html>

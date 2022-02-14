@@ -1,10 +1,20 @@
-server.port: 8080
+server:
+  port: 8080
 
-# Redis
+# TODO : KAKAO KEY 추가해야 된다
 spring:
+  # Redis
   redis:
     host: 127.0.0.1
     port: 6379
+  # Thymeleaf
+  thymeleaf:
+    cache: false
+    check-template-location: true
+    prefix: classpath:/templates/
+    mode: HTML5
+    suffix: .html
+    order: 0
 
 service:
   lottery:

@@ -28,6 +28,13 @@ dependencies {
 
 	// Validator
 	implementation('org.hibernate.validator:hibernate-validator')
+
+	//thymeleaf
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
+	//gson
+	implementation 'com.google.code.gson:gson'
 }
 
 test {
