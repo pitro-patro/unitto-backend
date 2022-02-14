@@ -35,6 +35,9 @@ dependencies {
 
 	//gson
 	implementation 'com.google.code.gson:gson'
+
+	//RestTemplate
+	implementation('org.apache.httpcomponents:httpclient')
 }
 
 test {

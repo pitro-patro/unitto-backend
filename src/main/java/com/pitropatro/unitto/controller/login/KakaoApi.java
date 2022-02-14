@@ -4,7 +4,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -27,6 +34,44 @@ public class KakaoApi {
         String reqURL = "https://kauth.kakao.com/oauth/token";
 
         try {
+            HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+            factory.setConnectTimeout(5000);    //타임아웃 5초
+            factory.setReadTimeout(5000);
+
+            RestTemplate restTemplate = new RestTemplate(factory);
+
+            StringBuffer urlBuffer = new StringBuffer();
+            // TODO : Redirect_uri 값 설정 방법 변경 필요
+            urlBuffer.append(reqURL)
+                    .append("?grant_type=authorization_code")
+                    .append("&client_id=" + kakaoApiKey)
+                    .append("&redirect_uri=http://localhost:8080/login/oauth2/code/kakao")
+                    .append("&code=" + code);
+
+            ResponseEntity<String> response = restTemplate.exchange(urlBuffer.toString(), HttpMethod.POST, null, String.class);
+
+            System.out.println("status: " + response.getStatusCode());
+            System.out.println("body: " + response.getBody());
+
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(response.getBody());
+
+            accessToken = element.getAsJsonObject().get("access_token").getAsString();
+            refreshToken = element.getAsJsonObject().get("refresh_token").getAsString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return accessToken;
+    }
+
+    /*public String getAccessToken2(String code) {
+        String accessToken = "";
+        String refreshToken = "";
+        // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-token
+        String reqURL = "https://kauth.kakao.com/oauth/token";
+
+        try {
             URL url = new URL(reqURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -35,9 +80,8 @@ public class KakaoApi {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
-            // TODO : 중요값 따른 파일로 빼기
-            System.out.println("*********API*********** = "+kakaoApiKey);
             sb.append("&client_id="+kakaoApiKey);
+            // TODO : Redirect_uri 값 설정 방법 변경 필요
             sb.append("&redirect_uri=http://localhost:8080/login/oauth2/code/kakao");
             sb.append("&code=" + code);
 
@@ -69,9 +113,50 @@ public class KakaoApi {
         }
 
         return accessToken;
-    }
+    }*/
 
     public HashMap<String, Object> getUserInfo(String accessToken) {
+        HashMap<String, Object> userInfo = new HashMap<>();
+        // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#req-user-info
+        String reqUrl = "https://kapi.kakao.com/v2/user/me";
+
+        try {
+            HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+            factory.setConnectTimeout(5000);    //타임아웃 5초
+            factory.setReadTimeout(5000);
+
+            RestTemplate restTemplate = new RestTemplate(factory);
+
+            // Header 생성
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization", "Bearer " + accessToken);
+
+            HttpEntity<String> entity = new HttpEntity<>("", headers);
+
+            ResponseEntity<String> response = restTemplate.exchange(reqUrl, HttpMethod.POST, entity, String.class);
+
+            System.out.println("status: " + response.getStatusCode());
+            System.out.println("body: " + response.getBody());
+
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(response.getBody());
+
+            JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
+            JsonObject kakaoAccount = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
+
+            String nickname = properties.getAsJsonObject().get("nickname").getAsString();
+            String email = kakaoAccount.getAsJsonObject().get("email").getAsString();
+
+            userInfo.put("nickname", nickname);
+            userInfo.put("email", email);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return userInfo;
+    }
+
+    /*public HashMap<String, Object> getUserInfo2(String accessToken) {
         HashMap<String, Object> userInfo = new HashMap<>();
         String reqUrl = "https://kapi.kakao.com/v2/user/me";
 
@@ -111,14 +196,41 @@ public class KakaoApi {
         }
 
         return userInfo;
-    }
+    }*/
 
     public void kakaoLogout(String accessToken) {
         // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#logout
-        String reqURL = "http://kapi.kakao.com/v1/user/logout";
+        String reqUrl = "https://kapi.kakao.com/v1/user/logout";
+
+        try{
+            HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+            factory.setConnectTimeout(5000);    //타임아웃 5초
+            factory.setReadTimeout(5000);
+
+            RestTemplate restTemplate = new RestTemplate(factory);
+
+            // Header 생성
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization", "Bearer " + accessToken);
+
+            HttpEntity<String> entity = new HttpEntity<>("", headers);
+
+            ResponseEntity<String> response = restTemplate.exchange(reqUrl, HttpMethod.POST, entity, String.class);
+
+            System.out.println("status: " + response.getStatusCode());
+            System.out.println("body: " + response.getBody());
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /*public void kakaoLogout2(String accessToken) {
+        // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#logout
+        String reqUrl = "https://kapi.kakao.com/v1/user/logout";
 
         try {
-            URL url = new URL(reqURL);
+            URL url = new URL(reqUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Authorization", "Bearer " + accessToken);
@@ -137,6 +249,6 @@ public class KakaoApi {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
 }

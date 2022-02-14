@@ -24,6 +24,14 @@ public class LoginController {
         return "kakaoLogin.html";
     }
 
+    /*@RequestMapping(value="/oauth2/code/kakao")
+    @ResponseBody
+    public HashMap<String, Object> kakaoAccessToken(@RequestParam("code") String code){
+        String accessToken = kakaoApi.getAccessToken(code);
+        HashMap<String, Object> userInfo = kakaoApi.getUserInfo(accessToken);
+        return userInfo;
+    }*/
+
     @RequestMapping(value = "/oauth2/code/kakao")
     @ResponseBody
     public ModelAndView kakaoLogin(@RequestParam("code") String code, HttpSession session){
