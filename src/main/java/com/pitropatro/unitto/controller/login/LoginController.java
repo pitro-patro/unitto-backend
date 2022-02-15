@@ -1,5 +1,7 @@
 package com.pitropatro.unitto.controller.login;
 
+import com.pitropatro.unitto.repository.MysqlRepository;
+import com.pitropatro.unitto.repository.dao.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,24 +15,18 @@ import java.util.HashMap;
 public class LoginController {
 
     private final KakaoApi kakaoApi;
+    private final MysqlRepository mysqlRepository;
 
     @Autowired
-    public LoginController(KakaoApi kakaoApi) {
+    public LoginController(KakaoApi kakaoApi, MysqlRepository mysqlRepository) {
         this.kakaoApi = kakaoApi;
+        this.mysqlRepository = mysqlRepository;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String kakaoLoginPage(){
         return "kakaoLogin.html";
     }
-
-    /*@RequestMapping(value="/oauth2/code/kakao")
-    @ResponseBody
-    public HashMap<String, Object> kakaoAccessToken(@RequestParam("code") String code){
-        String accessToken = kakaoApi.getAccessToken(code);
-        HashMap<String, Object> userInfo = kakaoApi.getUserInfo(accessToken);
-        return userInfo;
-    }*/
 
     @RequestMapping(value = "/oauth2/code/kakao")
     @ResponseBody
@@ -63,5 +59,11 @@ public class LoginController {
         session.removeAttribute("userId");
         mav.setViewName("kakaoLogin");
         return mav;
+    }
+
+    @RequestMapping(value="/test")
+    @ResponseBody
+    public User test(@RequestParam("email") String email){
+        return mysqlRepository.getUserByEmail(email);
     }
 }

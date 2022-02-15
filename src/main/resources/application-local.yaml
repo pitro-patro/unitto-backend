@@ -1,12 +1,17 @@
 server:
   port: 8080
 
-# TODO : KAKAO KEY 추가해야 된다
 spring:
   # Redis
   redis:
     host: 127.0.0.1
     port: 6379
+  # MySQL
+  mysql:
+    driver_class_name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost/unitto?characterEncoding=utf8
+    user_name: pitro-patro
+    password: pitro-patro
   # Thymeleaf
   thymeleaf:
     cache: false
