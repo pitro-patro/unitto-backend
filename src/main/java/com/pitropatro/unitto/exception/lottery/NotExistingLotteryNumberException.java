@@ -1,4 +1,4 @@
-package com.pitropatro.unitto.exception;
+package com.pitropatro.unitto.exception.lottery;
 
 public class NotExistingLotteryNumberException extends RuntimeException{
 }

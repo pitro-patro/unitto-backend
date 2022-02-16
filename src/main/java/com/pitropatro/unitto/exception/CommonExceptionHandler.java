@@ -1,5 +1,9 @@
 package com.pitropatro.unitto.exception;
 
+import com.pitropatro.unitto.exception.lottery.LotteryNumberOptionSizeException;
+import com.pitropatro.unitto.exception.lottery.NotExistingLotteryNumberException;
+import com.pitropatro.unitto.exception.lottery.UniqueNumberMaxTryException;
+import com.pitropatro.unitto.exception.user.UserEmailNullException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,5 +35,11 @@ public class CommonExceptionHandler {
     @ExceptionHandler(LotteryNumberOptionSizeException.class)
     public ResponseEntity<Object> handleLotteryNumberOptionSizeException(){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("Lottery Number Option Size Exceeded"));
+    }
+
+    //User
+    @ExceptionHandler(UserEmailNullException.class)
+    public ResponseEntity<Object> handleUserEmailNullException(){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("User Email Value Is NULL"));
     }
 }

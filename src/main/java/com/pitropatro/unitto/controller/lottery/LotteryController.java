@@ -4,7 +4,7 @@ import com.pitropatro.unitto.controller.lottery.dto.ConfirmedLotteryUniqueNumber
 import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberConfirmDto;
 import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberDto;
 import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberRequestDto;
-import com.pitropatro.unitto.exception.LotteryNumberOptionSizeException;
+import com.pitropatro.unitto.exception.lottery.LotteryNumberOptionSizeException;
 import com.pitropatro.unitto.service.LotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

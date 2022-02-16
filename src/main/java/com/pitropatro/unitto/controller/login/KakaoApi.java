@@ -3,6 +3,7 @@ package com.pitropatro.unitto.controller.login;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.pitropatro.unitto.controller.login.oauthinterface.OauthApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -10,23 +11,17 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 
 @Service
-public class KakaoApi {
+public class KakaoApi implements OauthApi {
 
     @Value("${kakao.kakao_id}")
     private String kakaoApiKey;
 
+    @Override
     public String getAccessToken(String code) {
         String accessToken = "";
         String refreshToken = "";
@@ -115,6 +110,7 @@ public class KakaoApi {
         return accessToken;
     }*/
 
+    @Override
     public HashMap<String, Object> getUserInfo(String accessToken) {
         HashMap<String, Object> userInfo = new HashMap<>();
         // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#req-user-info
@@ -198,7 +194,8 @@ public class KakaoApi {
         return userInfo;
     }*/
 
-    public void kakaoLogout(String accessToken) {
+    @Override
+    public void logout(String accessToken) {
         // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#logout
         String reqUrl = "https://kapi.kakao.com/v1/user/logout";
 

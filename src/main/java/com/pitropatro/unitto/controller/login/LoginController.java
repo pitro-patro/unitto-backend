@@ -1,7 +1,9 @@
 package com.pitropatro.unitto.controller.login;
 
-import com.pitropatro.unitto.repository.MysqlRepository;
+import com.pitropatro.unitto.exception.user.UserEmailNullException;
+import com.pitropatro.unitto.repository.UserRepository;
 import com.pitropatro.unitto.repository.dao.User;
+import com.pitropatro.unitto.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +17,14 @@ import java.util.HashMap;
 public class LoginController {
 
     private final KakaoApi kakaoApi;
-    private final MysqlRepository mysqlRepository;
+    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public LoginController(KakaoApi kakaoApi, MysqlRepository mysqlRepository) {
+    public LoginController(KakaoApi kakaoApi, UserRepository userRepository, UserService userService) {
         this.kakaoApi = kakaoApi;
-        this.mysqlRepository = mysqlRepository;
+        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -28,9 +32,19 @@ public class LoginController {
         return "kakaoLogin.html";
     }
 
+    // Kakao redirect uri
     @RequestMapping(value = "/oauth2/code/kakao")
     @ResponseBody
-    public ModelAndView kakaoLogin(@RequestParam("code") String code, HttpSession session){
+    public String kakaoLogin(@RequestParam("code") String code, HttpSession session){
+
+        userService.signIn(code, kakaoApi);
+
+        return null;
+    }
+
+    /*@RequestMapping(value = "/oauth2/code/kakao2")
+    @ResponseBody
+    public ModelAndView kakaoLogin2(@RequestParam("code") String code, HttpSession session){
         ModelAndView mav = new ModelAndView();
         // 1번 인증코드 요청 전달
         String accessToken = kakaoApi.getAccessToken(code);
@@ -40,6 +54,18 @@ public class LoginController {
 
         System.out.println("login info : " + userInfo.toString());
 
+        if(userInfo.get("email") == null){
+            throw new UserEmailNullException();
+        }
+
+        User user = userService.getUserByEmail(userInfo.get("email"));
+        // 존재하지 않는 회원일 경우 회원가입
+        if(user == null){
+            user = userService.signUp(userInfo);
+        }
+
+
+        // 지울 내용
         if(userInfo.get("email") != null){
             session.setAttribute("userId", userInfo.get("email"));
             session.setAttribute("accessToken", accessToken);
@@ -47,14 +73,14 @@ public class LoginController {
         mav.addObject("userId", userInfo.get("email"));
         mav.setViewName("kakaoLogin");
         return mav;
-    }
+    }*/
 
     @RequestMapping(value="/logout")
     @ResponseBody
     public ModelAndView logout(HttpSession session){
         ModelAndView mav = new ModelAndView();
 
-        kakaoApi.kakaoLogout((String)session.getAttribute("accessToken"));
+        kakaoApi.logout((String)session.getAttribute("accessToken"));
         session.removeAttribute("accessToken");
         session.removeAttribute("userId");
         mav.setViewName("kakaoLogin");
@@ -64,6 +90,6 @@ public class LoginController {
     @RequestMapping(value="/test")
     @ResponseBody
     public User test(@RequestParam("email") String email){
-        return mysqlRepository.getUserByEmail(email);
+        return userRepository.getUserByEmail(email);
     }
 }
