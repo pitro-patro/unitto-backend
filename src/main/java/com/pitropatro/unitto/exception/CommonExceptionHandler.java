@@ -4,10 +4,8 @@ import com.pitropatro.unitto.exception.lottery.LotteryNumberOptionSizeException;
 import com.pitropatro.unitto.exception.lottery.NotExistingLotteryNumberException;
 import com.pitropatro.unitto.exception.lottery.UniqueNumberMaxTryException;
 import com.pitropatro.unitto.exception.user.UserEmailNullException;
-<<<<<<< HEAD
+
 import com.pitropatro.unitto.exception.user.UserSignUpFailedException;
-=======
->>>>>>> f86225bc26a85439f8ad2fe996aebbc2e75ad535
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -46,12 +44,10 @@ public class CommonExceptionHandler {
     public ResponseEntity<Object> handleUserEmailNullException(){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("User Email Value Is NULL"));
     }
-<<<<<<< HEAD
 
     @ExceptionHandler(UserSignUpFailedException.class)
     public ResponseEntity<Object> handleUserSignUpFailedException(){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("User SignUp Failed"));
     }
-=======
->>>>>>> f86225bc26a85439f8ad2fe996aebbc2e75ad535
+
 }
