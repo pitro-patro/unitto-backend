@@ -35,11 +35,9 @@ public class LoginController {
     // Kakao redirect uri
     @RequestMapping(value = "/oauth2/code/kakao")
     @ResponseBody
-    public String kakaoLogin(@RequestParam("code") String code, HttpSession session){
+    public User kakaoLogin(@RequestParam("code") String code, HttpSession session){
 
-        userService.signIn(code, kakaoApi);
-
-        return null;
+        return userService.signIn(code, kakaoApi);
     }
 
     /*@RequestMapping(value = "/oauth2/code/kakao2")

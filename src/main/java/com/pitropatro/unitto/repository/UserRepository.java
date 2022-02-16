@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -30,6 +31,7 @@ public class UserRepository {
                                 rs.getString("email"),
                                 rs.getString("name"),
                                 rs.getString("refreshToken"),
+                                rs.getInt("refreshTokenExpire"),
                                 rs.getTimestamp("regdate").toLocalDateTime()
                         );
                         user.setId(rs.getLong("id"));
@@ -37,5 +39,16 @@ public class UserRepository {
                     }
                 }, email);
         return results.isEmpty() ? null : results.get(0);
+    }
+
+    public boolean signUp(HashMap<String, Object> userInfo, HashMap<String, Object> tokenData) {
+        int result = jdbcTemplate.update("INSERT INTO user(email, name, refreshToken, refreshTokenExpire) VALUES (?, ?, ?, ?)",
+                userInfo.get("email"),
+                userInfo.get("name"),
+                tokenData.get("refreshToken"),
+                tokenData.get("refreshTokenExpire")
+                );
+
+        return result == 1;
     }
 }
