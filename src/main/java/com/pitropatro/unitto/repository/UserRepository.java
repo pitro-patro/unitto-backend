@@ -12,12 +12,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class MysqlRepository {
+public class UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public MysqlRepository(DataSource dataSource) {
+    public UserRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 

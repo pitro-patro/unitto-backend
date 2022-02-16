@@ -2,8 +2,8 @@ package com.pitropatro.unitto.service;
 
 import com.pitropatro.unitto.controller.lottery.dto.ConfirmedLotteryUniqueNumberDto;
 import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberDto;
-import com.pitropatro.unitto.exception.NotExistingLotteryNumberException;
-import com.pitropatro.unitto.exception.UniqueNumberMaxTryException;
+import com.pitropatro.unitto.exception.lottery.NotExistingLotteryNumberException;
+import com.pitropatro.unitto.exception.lottery.UniqueNumberMaxTryException;
 import com.pitropatro.unitto.exception.WrongApproachException;
 import com.pitropatro.unitto.repository.RedisRepository;
 import org.springframework.beans.factory.annotation.Autowired;
