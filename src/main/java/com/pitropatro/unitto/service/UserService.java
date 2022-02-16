@@ -1,8 +1,14 @@
 package com.pitropatro.unitto.service;
 
+<<<<<<< HEAD
 import com.pitropatro.unitto.controller.login.oauthinterface.OauthApi;
 import com.pitropatro.unitto.exception.user.UserEmailNullException;
 import com.pitropatro.unitto.exception.user.UserSignUpFailedException;
+=======
+import com.pitropatro.unitto.controller.login.KakaoApi;
+import com.pitropatro.unitto.controller.login.oauthinterface.OauthApi;
+import com.pitropatro.unitto.exception.user.UserEmailNullException;
+>>>>>>> f86225bc26a85439f8ad2fe996aebbc2e75ad535
 import com.pitropatro.unitto.repository.UserRepository;
 import com.pitropatro.unitto.repository.dao.User;
 import org.springframework.beans.factory.annotation.Autowired;

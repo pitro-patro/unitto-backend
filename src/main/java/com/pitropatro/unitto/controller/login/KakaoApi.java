@@ -109,7 +109,6 @@ public class KakaoApi implements OauthApi {
         return userInfo;
     }
 
-
     @Override
     public void logout(String accessToken) {
         // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#logout
