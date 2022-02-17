@@ -8,9 +8,9 @@ spring:
     port: 6379
   # MySQL
   mysql:
-    driver_class_name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost/unitto?characterEncoding=utf8
-    user_name: pitro-patro
+    user-name: pitro-patro
     password: pitro-patro
   # Thymeleaf
   thymeleaf:
@@ -25,3 +25,8 @@ service:
   lottery:
     timeout: 120
     max_try: 100
+
+auth:
+  token:
+    secret-key: jwt-secret-key
+    expire-time: 3600000

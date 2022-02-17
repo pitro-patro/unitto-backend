@@ -1,5 +1,6 @@
 package com.pitropatro.unitto.controller.login;
 
+import com.pitropatro.unitto.controller.login.dto.UserSignInResponseDto;
 import com.pitropatro.unitto.exception.user.UserEmailNullException;
 import com.pitropatro.unitto.repository.UserRepository;
 import com.pitropatro.unitto.repository.dao.User;
@@ -35,7 +36,7 @@ public class LoginController {
     // Kakao redirect uri
     @RequestMapping(value = "/oauth2/code/kakao")
     @ResponseBody
-    public User kakaoLogin(@RequestParam("code") String code, HttpSession session){
+    public UserSignInResponseDto kakaoLogin(@RequestParam("code") String code, HttpSession session){
 
         return userService.signIn(code, kakaoApi);
     }
@@ -85,6 +86,7 @@ public class LoginController {
         return mav;
     }
 
+    // TODO: 테스트 코드 (삭제 예정)
     @RequestMapping(value="/test")
     @ResponseBody
     public User test(@RequestParam("email") String email){

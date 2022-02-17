@@ -43,6 +43,9 @@ dependencies {
 
 	//RestTemplate
 	implementation('org.apache.httpcomponents:httpclient')
+
+	// jwt
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 }
 
 test {

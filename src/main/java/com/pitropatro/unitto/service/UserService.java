@@ -1,5 +1,6 @@
 package com.pitropatro.unitto.service;
 
+import com.pitropatro.unitto.controller.login.dto.UserSignInResponseDto;
 import com.pitropatro.unitto.controller.login.oauthinterface.OauthApi;
 import com.pitropatro.unitto.exception.user.UserEmailNullException;
 import com.pitropatro.unitto.exception.user.UserSignUpFailedException;
@@ -14,13 +15,15 @@ import java.util.HashMap;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final TokenService tokenService;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, TokenService tokenService) {
         this.userRepository = userRepository;
+        this.tokenService = tokenService;
     }
 
-    public User signIn(String code, OauthApi oauthApi) {
+    public UserSignInResponseDto signIn(String code, OauthApi oauthApi) {
 
         // 1번 인증코드 요청 전달
         HashMap<String,Object> tokenData = oauthApi.getTokenData(code);
@@ -42,11 +45,12 @@ public class UserService {
             if(userRepository.signUp(userInfo, tokenData)){
                 user = userRepository.getUserByEmail((String) userInfo.get("email"));
             }
-            else
+            else{
                 throw new UserSignUpFailedException();
+            }
         }
 
-        return user;
+        return new UserSignInResponseDto(user.getEmail(), user.getName(), tokenService.createJwtToken(user.getId()));
     }
 
 

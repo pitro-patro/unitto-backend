@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DatasourceConfiguration {
 
-    @Value("${spring.mysql.driver_class_name}")
+    @Value("${spring.mysql.driver-class-name}")
     private String driverClassName;
     @Value("${spring.mysql.url}")
     private String jdbcUrl;
-    @Value("${spring.mysql.user_name}")
+    @Value("${spring.mysql.user-name}")
     private String userName;
     @Value("${spring.mysql.password}")
     private String password;

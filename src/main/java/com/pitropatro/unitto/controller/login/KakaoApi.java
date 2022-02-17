@@ -18,7 +18,7 @@ import java.util.HashMap;
 @Service
 public class KakaoApi implements OauthApi {
 
-    @Value("${kakao.kakao_id}")
+    @Value("${kakao.kakao-id}")
     private String kakaoApiKey;
 
     @Override
