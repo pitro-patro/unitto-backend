@@ -45,10 +45,10 @@ public class LotteryService {
         String lotteryNumberInString = lotteryNumbers.stream().map(String::valueOf).collect(Collectors.joining("-"));
 
         String lotteryNumberExistence = redisRepository.getValueByKey(lotteryNumberInString);
-        if (lotteryNumberExistence == null) {
+        if (lotteryNumberExistence == null) {   // 번호 추첨하지 않은 상태에서 접근
             // TODO : 둘다 잘못된 접근 예외로 처리해야 되나?
             throw new NotExistingLotteryNumberException();
-        } else if (Boolean.parseBoolean(lotteryNumberExistence)) {
+        } else if (Boolean.parseBoolean(lotteryNumberExistence)) {  // 이미 사용중인 번호에 대한 접근
             throw new WrongApproachException();
         }
 

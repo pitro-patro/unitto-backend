@@ -20,6 +20,8 @@ public class KakaoApi implements OauthApi {
 
     @Value("${kakao.kakao-id}")
     private String kakaoApiKey;
+    @Value("${kakao.redirect-uri}")
+    private String redirectUri;
 
     @Override
     public HashMap<String, Object> getTokenData(String code) {
@@ -38,11 +40,11 @@ public class KakaoApi implements OauthApi {
             RestTemplate restTemplate = new RestTemplate(factory);
 
             StringBuffer urlBuffer = new StringBuffer();
-            // TODO : Redirect_uri 값 설정 방법 변경 필요
+
             urlBuffer.append(reqURL)
                     .append("?grant_type=authorization_code")
                     .append("&client_id=" + kakaoApiKey)
-                    .append("&redirect_uri=http://localhost:8080/login/oauth2/code/kakao")
+                    .append("&redirect_uri="+redirectUri)
                     .append("&code=" + code);
 
             ResponseEntity<String> response = restTemplate.exchange(urlBuffer.toString(), HttpMethod.POST, null, String.class);
