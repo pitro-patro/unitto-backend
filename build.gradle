@@ -46,6 +46,10 @@ dependencies {
 
 	// jwt
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+	// AOP
+	implementation 'org.springframework:spring-context'
+	implementation 'org.aspectj:aspectjweaver:1.8.13'
 }
 
 test {

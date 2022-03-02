@@ -1,5 +1,6 @@
 package com.pitropatro.unitto.controller.lottery;
 
+import com.pitropatro.unitto.aspect.TokenRequired;
 import com.pitropatro.unitto.controller.lottery.dto.ConfirmedLotteryUniqueNumberDto;
 import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberConfirmDto;
 import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberDto;
@@ -24,6 +25,7 @@ public class LotteryController {
         this.lotteryService = lotteryService;
     }
 
+    @TokenRequired
     @RequestMapping(value="/unique-numbers", method= RequestMethod.POST)
     public LotteryUniqueNumberDto getUniqueNumber(@Valid @RequestBody LotteryUniqueNumberRequestDto lotteryUniqueNumberRequestDto, Errors errors){
 
@@ -37,6 +39,7 @@ public class LotteryController {
                 lotteryUniqueNumberRequestDto.getExcludeNumbers());
     }
 
+    @TokenRequired
     @RequestMapping(value="/unique-numbers-confirm", method = RequestMethod.POST)
     @ResponseStatus(value= HttpStatus.OK)
     public ConfirmedLotteryUniqueNumberDto getUniqueNumberConfirm(@RequestBody LotteryUniqueNumberConfirmDto lotteryUniqueNumberConfirmDto){
