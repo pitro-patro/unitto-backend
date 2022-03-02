@@ -1,5 +1,8 @@
 package com.pitropatro.unitto.service;
 
+import com.pitropatro.unitto.exception.token.ExpiredTokenException;
+import com.pitropatro.unitto.exception.token.InvalidTokenException;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,5 +43,23 @@ public class TokenService {
                 .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
                 .compact(); // Create Token
 
+    }
+
+    public Map<String, Object> verifyJwtAndReturnClaims(String jwtToken) {
+        Map<String, Object> claims = null;
+
+        // return jwt token's payloads
+        try {
+            claims = Jwts.parser()
+                    .setSigningKey(secretKey.getBytes())
+                    .parseClaimsJws(jwtToken)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            throw new ExpiredTokenException();
+        } catch (Exception e) {
+            throw new InvalidTokenException();
+        }
+
+        return claims;
     }
 }

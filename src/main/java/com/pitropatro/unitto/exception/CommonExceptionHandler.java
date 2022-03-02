@@ -3,6 +3,9 @@ package com.pitropatro.unitto.exception;
 import com.pitropatro.unitto.exception.lottery.LotteryNumberOptionSizeException;
 import com.pitropatro.unitto.exception.lottery.NotExistingLotteryNumberException;
 import com.pitropatro.unitto.exception.lottery.UniqueNumberMaxTryException;
+import com.pitropatro.unitto.exception.token.EmptyTokenException;
+import com.pitropatro.unitto.exception.token.ExpiredTokenException;
+import com.pitropatro.unitto.exception.token.InvalidTokenException;
 import com.pitropatro.unitto.exception.user.UserEmailNullException;
 
 import com.pitropatro.unitto.exception.user.UserSignUpFailedException;
@@ -50,4 +53,19 @@ public class CommonExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("User SignUp Failed"));
     }
 
+    //Token
+    @ExceptionHandler(EmptyTokenException.class)
+    public ResponseEntity<Object> emptyTokenException(){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Token is NULL"));
+    }
+
+    @ExceptionHandler(ExpiredTokenException.class)
+    public ResponseEntity<Object> expiredTokenException(){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Token is Expired"));
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<Object> invalidTokenException(){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Token is Invalid"));
+    }
 }
