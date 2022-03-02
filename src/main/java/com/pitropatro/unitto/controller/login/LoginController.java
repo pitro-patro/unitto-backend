@@ -89,7 +89,7 @@ public class LoginController {
     // TODO: 테스트 코드 (삭제 예정)
     @RequestMapping(value="/test")
     @ResponseBody
-    public User test(@RequestParam("email") String email){
-        return userRepository.getUserByEmail(email);
+    public User test(@RequestParam("id") String id){
+        return userRepository.getUserById(id);
     }
 }

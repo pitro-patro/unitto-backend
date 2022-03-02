@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserRepository {
@@ -24,20 +25,15 @@ public class UserRepository {
 
     public User getUserByEmail(String email){
         List<User> results = jdbcTemplate.query("select * from USER where email = ?",
-                new RowMapper<User>() {
-                    @Override
-                    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        User user = new User(
-                                rs.getString("email"),
-                                rs.getString("name"),
-                                rs.getString("refreshToken"),
-                                rs.getInt("refreshTokenExpire"),
-                                rs.getTimestamp("regdate").toLocalDateTime()
-                        );
-                        user.setId(rs.getLong("id"));
-                        return user;
-                    }
-                }, email);
+                new UserRowMapper()
+                , email);
+        return results.isEmpty() ? null : results.get(0);
+    }
+
+    public User getUserById(String id) {
+        List<User> results = jdbcTemplate.query("select * from USER where id = ?",
+                new UserRowMapper()
+                , id);
         return results.isEmpty() ? null : results.get(0);
     }
 
@@ -51,4 +47,5 @@ public class UserRepository {
 
         return result == 1;
     }
+
 }

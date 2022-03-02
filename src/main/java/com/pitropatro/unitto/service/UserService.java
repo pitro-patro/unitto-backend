@@ -2,14 +2,17 @@ package com.pitropatro.unitto.service;
 
 import com.pitropatro.unitto.controller.login.dto.UserSignInResponseDto;
 import com.pitropatro.unitto.controller.login.oauthinterface.OauthApi;
+import com.pitropatro.unitto.exception.token.EmptyTokenException;
 import com.pitropatro.unitto.exception.user.UserEmailNullException;
 import com.pitropatro.unitto.exception.user.UserSignUpFailedException;
 import com.pitropatro.unitto.repository.UserRepository;
 import com.pitropatro.unitto.repository.dao.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -51,6 +54,20 @@ public class UserService {
         }
 
         return new UserSignInResponseDto(user.getEmail(), user.getName(), tokenService.createJwtToken(user.getId()));
+    }
+
+    public User getUserInfoByToken(String bearerToken){
+
+        if(!StringUtils.hasLength(bearerToken)){
+            throw new EmptyTokenException();
+        }
+
+        String jwtToken = bearerToken.substring("Bearer ".length());
+
+        Map<String, Object> jwtClaims = tokenService.verifyJwtAndReturnClaims(jwtToken);
+        String userId = jwtClaims.get("id").toString();
+
+        return userRepository.getUserById(userId);
     }
 
 

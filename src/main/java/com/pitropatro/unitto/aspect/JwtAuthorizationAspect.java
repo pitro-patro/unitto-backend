@@ -1,7 +1,9 @@
 package com.pitropatro.unitto.aspect;
 
 import com.pitropatro.unitto.exception.token.EmptyTokenException;
+import com.pitropatro.unitto.repository.dao.User;
 import com.pitropatro.unitto.service.TokenService;
+import com.pitropatro.unitto.service.UserService;
 import io.jsonwebtoken.Claims;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -22,45 +24,32 @@ import java.util.Map;
 @Component
 public class JwtAuthorizationAspect {
 
+    private final UserService userService;
     private final TokenService tokenService;
 
     @Autowired
-    public JwtAuthorizationAspect(TokenService tokenService) {
+    public JwtAuthorizationAspect(UserService userService, TokenService tokenService) {
+        this.userService = userService;
         this.tokenService = tokenService;
     }
 
-    @Before("@annotation(tokenRequired)")
-    public void authenticateJwt(TokenRequired tokenRequired){
+    @Around("@annotation(tokenRequired)")
+    public Object authenticateJwt(ProceedingJoinPoint joinPoint, TokenRequired tokenRequired) throws Throwable {
         // TODO: 출력 지우기
-        System.out.println("authenticate JWT************************");
+        System.out.println("************************Authenticate JWT************************");
 
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
 
-        String token = request.getHeader("Authorization");
-        if(!StringUtils.hasLength(token)){
-            throw new EmptyTokenException();
-        }
+        String bearerToken = request.getHeader("Authorization");
+        User userInfo = userService.getUserInfoByToken(bearerToken);
 
-        String jwtToken = token.substring("Bearer ".length());
-        System.out.println(jwtToken);
+        // 컨트롤러 메서드의 첫 파라미터를 사용자 정보로 설정한다
+        Object [] args = joinPoint.getArgs();
+        args[0] = userInfo;
+        Object result = joinPoint.proceed(args);
 
-        Map<String, Object> jwtClaims = tokenService.verifyJwtAndReturnClaims(jwtToken);
-        String userId = jwtClaims.get("id").toString();
-        System.out.println(userId);
-
+        return result;
     }
 
-    /*@Pointcut("execution(public * com.pitropatro.unitto.controller.lottery.*.*(..))")
-    public void controllerPointcut(){}
-
-    @Around("controllerPointcut()")
-    public Object test(ProceedingJoinPoint joinPoint) throws Throwable{
-        System.out.println("AOP************************************");
-        System.out.println(joinPoint.getSignature().getName());
-        System.out.println(Arrays.toString(joinPoint.getArgs()));
-
-        Object result = joinPoint.proceed();
-        return result;
-    }*/
 }
