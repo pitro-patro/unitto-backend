@@ -17,6 +17,11 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+	// DB
+	implementation('org.springframework:spring-jdbc')
+	implementation('org.apache.tomcat:tomcat-jdbc')
+	implementation('mysql:mysql-connector-java')
+
 	// Redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
@@ -28,6 +33,23 @@ dependencies {
 
 	// Validator
 	implementation('org.hibernate.validator:hibernate-validator')
+
+	//thymeleaf
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
+	//gson
+	implementation 'com.google.code.gson:gson'
+
+	//RestTemplate
+	implementation('org.apache.httpcomponents:httpclient')
+
+	// jwt
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+	// AOP
+	implementation 'org.springframework:spring-context'
+	implementation 'org.aspectj:aspectjweaver:1.8.13'
 }
 
 test {

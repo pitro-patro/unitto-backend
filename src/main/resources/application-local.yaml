@@ -1,12 +1,32 @@
-server.port: 8080
+server:
+  port: 8080
 
-# Redis
 spring:
+  # Redis
   redis:
     host: 127.0.0.1
     port: 6379
+  # MySQL
+  mysql:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost/unitto?characterEncoding=utf8
+    user-name: pitro-patro
+    password: pitro-patro
+  # Thymeleaf
+  thymeleaf:
+    cache: false
+    check-template-location: true
+    prefix: classpath:/templates/
+    mode: HTML5
+    suffix: .html
+    order: 0
 
 service:
   lottery:
     timeout: 120
     max_try: 100
+
+auth:
+  token:
+    secret-key: jwt-secret-key
+    expire-time: 3600000

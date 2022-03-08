@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Kakao API KEY ###
+src/main/resources/application-secret.yaml
+src/main/resources/templates/kakaoLogin.html
