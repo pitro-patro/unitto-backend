@@ -64,6 +64,7 @@ public class UserService {
 
         String jwtToken = bearerToken.substring("Bearer ".length());
 
+        // jwtToken에서 사용자 id값 추출
         Map<String, Object> jwtClaims = tokenService.verifyJwtAndReturnClaims(jwtToken);
         String userId = jwtClaims.get("id").toString();
 

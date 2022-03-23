@@ -41,39 +41,6 @@ public class LoginController {
         return userService.signIn(code, kakaoApi);
     }
 
-    /*@RequestMapping(value = "/oauth2/code/kakao2")
-    @ResponseBody
-    public ModelAndView kakaoLogin2(@RequestParam("code") String code, HttpSession session){
-        ModelAndView mav = new ModelAndView();
-        // 1번 인증코드 요청 전달
-        String accessToken = kakaoApi.getAccessToken(code);
-
-        // 2번 인증코드로 토큰 전달
-        HashMap<String, Object> userInfo = kakaoApi.getUserInfo(accessToken);
-
-        System.out.println("login info : " + userInfo.toString());
-
-        if(userInfo.get("email") == null){
-            throw new UserEmailNullException();
-        }
-
-        User user = userService.getUserByEmail(userInfo.get("email"));
-        // 존재하지 않는 회원일 경우 회원가입
-        if(user == null){
-            user = userService.signUp(userInfo);
-        }
-
-
-        // 지울 내용
-        if(userInfo.get("email") != null){
-            session.setAttribute("userId", userInfo.get("email"));
-            session.setAttribute("accessToken", accessToken);
-        }
-        mav.addObject("userId", userInfo.get("email"));
-        mav.setViewName("kakaoLogin");
-        return mav;
-    }*/
-
     @RequestMapping(value="/logout")
     @ResponseBody
     public ModelAndView logout(HttpSession session){
@@ -91,5 +58,11 @@ public class LoginController {
     @ResponseBody
     public User test(@RequestParam("id") String id){
         return userRepository.getUserById(id);
+    }
+
+    @RequestMapping(value="/react-test")
+    @ResponseBody
+    public String reactTest(){
+        return "Server Connected (Port 8080)";
     }
 }

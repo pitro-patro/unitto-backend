@@ -56,16 +56,17 @@ public class CommonExceptionHandler {
     //Token
     @ExceptionHandler(EmptyTokenException.class)
     public ResponseEntity<Object> emptyTokenException(){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Token is NULL"));
+        //return new ResponseEntity<Object>("Token Null", HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("Token is NULL"));
     }
 
     @ExceptionHandler(ExpiredTokenException.class)
     public ResponseEntity<Object> expiredTokenException(){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Token is Expired"));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("Token is Expired"));
     }
 
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<Object> invalidTokenException(){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Token is Invalid"));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("Token is Invalid"));
     }
 }
