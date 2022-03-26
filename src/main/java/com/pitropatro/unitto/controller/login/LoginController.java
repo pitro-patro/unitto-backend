@@ -1,9 +1,8 @@
 package com.pitropatro.unitto.controller.login;
 
 import com.pitropatro.unitto.controller.login.dto.UserSignInResponseDto;
-import com.pitropatro.unitto.exception.user.UserEmailNullException;
 import com.pitropatro.unitto.repository.UserRepository;
-import com.pitropatro.unitto.repository.dao.User;
+import com.pitropatro.unitto.repository.dto.User;
 import com.pitropatro.unitto.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 
 @Controller
 @RequestMapping("/login")

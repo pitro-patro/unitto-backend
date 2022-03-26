@@ -1,11 +1,9 @@
 package com.pitropatro.unitto.controller.user;
 
 import com.pitropatro.unitto.aspect.TokenRequired;
-import com.pitropatro.unitto.controller.user.dto.UserInfoDto;
-import com.pitropatro.unitto.repository.dao.User;
+import com.pitropatro.unitto.repository.dto.User;
 import com.pitropatro.unitto.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;

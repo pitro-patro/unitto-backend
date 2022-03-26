@@ -1,4 +1,4 @@
-package com.pitropatro.unitto.repository.dao;
+package com.pitropatro.unitto.repository.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
