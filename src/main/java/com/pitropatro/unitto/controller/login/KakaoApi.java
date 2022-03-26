@@ -44,6 +44,7 @@ public class KakaoApi implements OauthApi {
             urlBuffer.append(reqURL)
                     .append("?grant_type=authorization_code")
                     .append("&client_id=" + kakaoApiKey)
+                    // 인가 코드가 리다이렉트된 URI
                     .append("&redirect_uri="+redirectUri)
                     .append("&code=" + code);
 

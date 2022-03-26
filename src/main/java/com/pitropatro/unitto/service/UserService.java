@@ -6,7 +6,7 @@ import com.pitropatro.unitto.exception.token.EmptyTokenException;
 import com.pitropatro.unitto.exception.user.UserEmailNullException;
 import com.pitropatro.unitto.exception.user.UserSignUpFailedException;
 import com.pitropatro.unitto.repository.UserRepository;
-import com.pitropatro.unitto.repository.dao.User;
+import com.pitropatro.unitto.repository.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -64,6 +64,7 @@ public class UserService {
 
         String jwtToken = bearerToken.substring("Bearer ".length());
 
+        // jwtToken에서 사용자 id값 추출
         Map<String, Object> jwtClaims = tokenService.verifyJwtAndReturnClaims(jwtToken);
         String userId = jwtClaims.get("id").toString();
 

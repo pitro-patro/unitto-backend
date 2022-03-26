@@ -1,24 +1,17 @@
 package com.pitropatro.unitto.aspect;
 
-import com.pitropatro.unitto.exception.token.EmptyTokenException;
-import com.pitropatro.unitto.repository.dao.User;
+import com.pitropatro.unitto.repository.dto.User;
 import com.pitropatro.unitto.service.TokenService;
 import com.pitropatro.unitto.service.UserService;
-import io.jsonwebtoken.Claims;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.Map;
 
 @Aspect
 @Component

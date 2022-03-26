@@ -1,6 +1,6 @@
 package com.pitropatro.unitto.repository;
 
-import com.pitropatro.unitto.repository.dao.User;
+import com.pitropatro.unitto.repository.dto.User;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
