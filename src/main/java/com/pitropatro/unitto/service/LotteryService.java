@@ -3,9 +3,12 @@ package com.pitropatro.unitto.service;
 import com.pitropatro.unitto.controller.lottery.dto.ConfirmedLotteryUniqueNumberDto;
 import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberDto;
 import com.pitropatro.unitto.exception.lottery.NotExistingLotteryNumberException;
+import com.pitropatro.unitto.exception.lottery.SaveConfirmedUniqueNumberFailedException;
 import com.pitropatro.unitto.exception.lottery.UniqueNumberMaxTryException;
 import com.pitropatro.unitto.exception.WrongApproachException;
+import com.pitropatro.unitto.repository.ConfirmedUniqueNumberRepository;
 import com.pitropatro.unitto.repository.RedisRepository;
+import com.pitropatro.unitto.repository.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,7 @@ import java.util.stream.Collectors;
 @Service
 public class LotteryService {
     private final RedisRepository redisRepository;
+    private final ConfirmedUniqueNumberRepository confirmedUniqueNumberRepository;
 
     @Value("${service.lottery.timeout}")
     private int TIMEOUT;
@@ -23,8 +27,9 @@ public class LotteryService {
     private int MAXTRY;
 
     @Autowired
-    public LotteryService(RedisRepository redisRepository) {
+    public LotteryService(RedisRepository redisRepository, ConfirmedUniqueNumberRepository confirmedUniqueNumberRepository) {
         this.redisRepository = redisRepository;
+        this.confirmedUniqueNumberRepository = confirmedUniqueNumberRepository;
     }
 
     public LotteryUniqueNumberDto getUniqueNumber(List<Integer> includeNumbers, List<Integer> excludeNumbers) {
@@ -41,7 +46,7 @@ public class LotteryService {
         throw new UniqueNumberMaxTryException();
     }
 
-    public ConfirmedLotteryUniqueNumberDto confirmUniqueNumber(List<Integer> lotteryNumbers, Boolean confirm) {
+    public ConfirmedLotteryUniqueNumberDto confirmUniqueNumber(User userInfo, List<Integer> lotteryNumbers, Boolean confirm) {
         String lotteryNumberInString = lotteryNumbers.stream().map(String::valueOf).collect(Collectors.joining("-"));
 
         String lotteryNumberExistence = redisRepository.getValueByKey(lotteryNumberInString);
@@ -52,7 +57,13 @@ public class LotteryService {
         }
 
         if (confirm) {
-            redisRepository.insertKeyValue(lotteryNumberInString, "true");
+            if(confirmedUniqueNumberRepository.saveConfirmedUniqueNumber(userInfo, lotteryNumberInString)){
+                redisRepository.insertKeyValue(lotteryNumberInString, "true");
+            }
+            else{
+                throw new SaveConfirmedUniqueNumberFailedException();
+            }
+
             return new ConfirmedLotteryUniqueNumberDto(lotteryNumbers);
         } else {
             redisRepository.deleteValueByKey(lotteryNumberInString);

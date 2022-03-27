@@ -23,7 +23,7 @@ spring:
 
 service:
   lottery:
-    timeout: 120
+    timeout: 30
     max_try: 100
 
 auth:

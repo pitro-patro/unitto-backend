@@ -2,6 +2,7 @@ package com.pitropatro.unitto.exception;
 
 import com.pitropatro.unitto.exception.lottery.LotteryNumberOptionSizeException;
 import com.pitropatro.unitto.exception.lottery.NotExistingLotteryNumberException;
+import com.pitropatro.unitto.exception.lottery.SaveConfirmedUniqueNumberFailedException;
 import com.pitropatro.unitto.exception.lottery.UniqueNumberMaxTryException;
 import com.pitropatro.unitto.exception.token.EmptyTokenException;
 import com.pitropatro.unitto.exception.token.ExpiredTokenException;
@@ -51,6 +52,12 @@ public class CommonExceptionHandler {
     @ExceptionHandler(UserSignUpFailedException.class)
     public ResponseEntity<Object> handleUserSignUpFailedException(){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("User SignUp Failed"));
+    }
+
+    //ConfirmedUniqueNumberRepository
+    @ExceptionHandler(SaveConfirmedUniqueNumberFailedException.class)
+    public ResponseEntity<Object> handleSaveConfirmedUniqueNumberFailedException(){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Saving Confirmed Unique Number to MySQL Failed"));
     }
 
     //Token
