@@ -48,9 +48,10 @@ public class LotteryController {
     @ResponseStatus(value= HttpStatus.OK)
     public ConfirmedLotteryUniqueNumberDto getUniqueNumberConfirm(User userInfo, @RequestBody LotteryUniqueNumberConfirmDto lotteryUniqueNumberConfirmDto){
 
-        System.out.println("서비스 이용 사용자: "+userInfo.getEmail());
+        System.out.println("Current USER: "+userInfo.getEmail());
 
         return lotteryService.confirmUniqueNumber(
+                userInfo,
                 lotteryUniqueNumberConfirmDto.getLotteryNumbers(),
                 lotteryUniqueNumberConfirmDto.getConfirm());
     }

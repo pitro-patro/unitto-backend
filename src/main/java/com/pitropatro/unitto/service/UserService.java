@@ -5,13 +5,16 @@ import com.pitropatro.unitto.controller.login.oauthinterface.OauthApi;
 import com.pitropatro.unitto.exception.token.EmptyTokenException;
 import com.pitropatro.unitto.exception.user.UserEmailNullException;
 import com.pitropatro.unitto.exception.user.UserSignUpFailedException;
+import com.pitropatro.unitto.repository.ConfirmedUniqueNumberRepository;
 import com.pitropatro.unitto.repository.UserRepository;
+import com.pitropatro.unitto.repository.dto.ConfirmedUniqueNumber;
 import com.pitropatro.unitto.repository.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -19,11 +22,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final TokenService tokenService;
+    private final ConfirmedUniqueNumberRepository confirmedUniqueNumberRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, TokenService tokenService) {
+    public UserService(UserRepository userRepository, TokenService tokenService, ConfirmedUniqueNumberRepository confirmedUniqueNumberRepository) {
         this.userRepository = userRepository;
         this.tokenService = tokenService;
+        this.confirmedUniqueNumberRepository = confirmedUniqueNumberRepository;
     }
 
     public UserSignInResponseDto signIn(String code, OauthApi oauthApi) {
@@ -71,5 +76,8 @@ public class UserService {
         return userRepository.getUserById(userId);
     }
 
+    public List<ConfirmedUniqueNumber> getUserConfirmedUniqueNumber(User userInfo) {
+        return confirmedUniqueNumberRepository.getConfirmedUniqueNumberById(userInfo.getId().toString());
+    }
 
 }
