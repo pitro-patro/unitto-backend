@@ -2,7 +2,6 @@ package com.pitropatro.unitto.controller.login;
 
 import com.pitropatro.unitto.controller.login.dto.UserSignInResponseDto;
 import com.pitropatro.unitto.repository.UserRepository;
-import com.pitropatro.unitto.repository.dto.User;
 import com.pitropatro.unitto.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,8 +53,9 @@ public class LoginController {
     // TODO: 테스트 코드 (삭제 예정)
     @RequestMapping(value="/test")
     @ResponseBody
-    public User test(@RequestParam("id") String id){
-        return userRepository.getUserById(id);
+    public void test(){
+
+        return;
     }
 
     @RequestMapping(value="/react-test")
@@ -63,4 +63,5 @@ public class LoginController {
     public String reactTest(){
         return "Server Connected (Port 8080)";
     }
+
 }

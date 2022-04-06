@@ -23,8 +23,11 @@ spring:
 
 service:
   lottery:
-    timeout: 30
+    timeout: 120
     max_try: 100
+    # lottery round and date
+    round: 1010
+    round_date: 2022-04-03 00:00:00
 
 auth:
   token:

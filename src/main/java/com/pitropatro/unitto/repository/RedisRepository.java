@@ -1,11 +1,11 @@
 package com.pitropatro.unitto.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Repository
@@ -37,5 +37,15 @@ public class RedisRepository {
     public boolean deleteValueByKey(String key) {
         return redisTemplate.delete(key);
         // return null(값 없는 경우), true(삭제 성공시)
+    }
+
+    public boolean flushAll(){
+        System.out.println("****FLUSH ALL REDIS****");
+        Set<String> keys = redisTemplate.keys("*");
+        for (String key : keys){
+            redisTemplate.delete(key);
+        }
+
+        return true;
     }
 }
