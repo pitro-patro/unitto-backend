@@ -11,6 +11,7 @@ public class ConfirmedUniqueNumberRowMapper implements RowMapper<ConfirmedUnique
     public ConfirmedUniqueNumber mapRow(ResultSet rs, int rowNum) throws SQLException {
         ConfirmedUniqueNumber confirmedUniqueNumber = new ConfirmedUniqueNumber(
                 rs.getLong("userId"),
+                rs.getLong("lotteryRound"),
                 rs.getString("lotteryNumber"),
                 rs.getTimestamp("confirmDate").toLocalDateTime()
         );

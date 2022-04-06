@@ -12,11 +12,13 @@ import java.time.LocalDateTime;
 public class ConfirmedUniqueNumber {
     private Long id;
     private Long userId;
+    private Long lotteryRound;
     private String lotteryNumber;
     private LocalDateTime confirmDate;
 
-    public ConfirmedUniqueNumber(Long userId, String lotteryNumber, LocalDateTime confirmDate) {
+    public ConfirmedUniqueNumber(Long userId, Long lotteryRound, String lotteryNumber, LocalDateTime confirmDate) {
         this.userId = userId;
+        this.lotteryRound = lotteryRound;
         this.lotteryNumber = lotteryNumber;
         this.confirmDate = confirmDate;
     }
