@@ -1,6 +1,10 @@
 package com.pitropatro.unitto.service;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.pitropatro.unitto.controller.lottery.dto.ConfirmedLotteryUniqueNumberDto;
+import com.pitropatro.unitto.controller.lottery.dto.LotteryRoundNumberDto;
 import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberDto;
 import com.pitropatro.unitto.exception.lottery.NotExistingLotteryNumberException;
 import com.pitropatro.unitto.exception.lottery.SaveConfirmedUniqueNumberFailedException;
@@ -11,8 +15,13 @@ import com.pitropatro.unitto.repository.RedisRepository;
 import com.pitropatro.unitto.repository.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import javax.xml.ws.Response;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -121,5 +130,45 @@ public class LotteryService {
         long currentLotteryRound = lotteryRound + dayDifference/7;
 
         return currentLotteryRound;
+    }
+
+    public LotteryRoundNumberDto getLotteryRoundNumber(String round) {
+
+        List<Integer> lotteryRoundNumber = new ArrayList<>();
+        int bonusNumber = 0;
+        String roundDate = "";
+
+        //https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=100
+        String reqUrl = "https://www.dhlottery.co.kr/common.do?method=getLottoNumber";
+
+        try{
+            HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+            factory.setConnectTimeout(5000);
+            factory.setReadTimeout(5000);
+
+            RestTemplate restTemplate = new RestTemplate(factory);
+
+            StringBuffer urlBuffer = new StringBuffer();
+            urlBuffer.append(reqUrl).append("&drwNo="+round);
+
+            ResponseEntity<String> response = restTemplate.exchange(urlBuffer.toString(), HttpMethod.GET, null, String.class);
+
+            //System.out.println("body: " + response.getBody());
+            //body: {"totSellamnt":56561977000,"returnValue":"success","drwNoDate":"2004-10-30","firstWinamnt":3315315525,"drwtNo6":42,"drwtNo4":23,"firstPrzwnerCo":4,"drwtNo5":37,"bnusNo":6,"firstAccumamnt":0,"drwNo":100,"drwtNo2":7,"drwtNo3":11,"drwtNo1":1}
+
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(response.getBody());
+
+            for(int i=1; i<7; i++){
+                lotteryRoundNumber.add(element.getAsJsonObject().get("drwtNo"+i).getAsInt());
+            }
+            bonusNumber = element.getAsJsonObject().get("bnusNo").getAsInt();
+            roundDate = element.getAsJsonObject().get("drwNoDate").getAsString();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return new LotteryRoundNumberDto(lotteryRoundNumber, bonusNumber, roundDate);
     }
 }
