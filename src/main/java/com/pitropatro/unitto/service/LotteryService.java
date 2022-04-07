@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,6 +28,11 @@ public class LotteryService {
     private int TIMEOUT;
     @Value("${service.lottery.max_try}")
     private int MAXTRY;
+
+    @Value("${service.lottery.round}")
+    private int lotteryRound;
+    @Value("${service.lottery.round_date}")
+    private String lotteryRoundStartDate;
 
     @Autowired
     public LotteryService(RedisRepository redisRepository, ConfirmedUniqueNumberRepository confirmedUniqueNumberRepository) {
@@ -57,7 +65,7 @@ public class LotteryService {
         }
 
         if (confirm) {
-            if(confirmedUniqueNumberRepository.saveConfirmedUniqueNumber(userInfo, lotteryNumberInString)){
+            if(confirmedUniqueNumberRepository.saveConfirmedUniqueNumber(userInfo, getLotteryRound(), lotteryNumberInString)){
                 redisRepository.insertKeyValue(lotteryNumberInString, "true");
             }
             else{
@@ -99,5 +107,19 @@ public class LotteryService {
         ArrayList<Integer> uniqueNumberAsList = new ArrayList<>(uniqueNumber.keySet());
         Collections.sort(uniqueNumberAsList);
         return uniqueNumberAsList;
+    }
+
+    public long getLotteryRound(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime lastDate = LocalDateTime.parse(lotteryRoundStartDate, formatter);
+
+        LocalDateTime currentDate = LocalDateTime.now();
+
+        Duration duration = Duration.between(lastDate, currentDate);
+
+        long dayDifference = duration.toDays();
+        long currentLotteryRound = lotteryRound + dayDifference/7;
+
+        return currentLotteryRound;
     }
 }
