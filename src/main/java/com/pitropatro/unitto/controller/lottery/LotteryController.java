@@ -1,10 +1,7 @@
 package com.pitropatro.unitto.controller.lottery;
 
 import com.pitropatro.unitto.aspect.TokenRequired;
-import com.pitropatro.unitto.controller.lottery.dto.ConfirmedLotteryUniqueNumberDto;
-import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberConfirmDto;
-import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberDto;
-import com.pitropatro.unitto.controller.lottery.dto.LotteryUniqueNumberRequestDto;
+import com.pitropatro.unitto.controller.lottery.dto.*;
 import com.pitropatro.unitto.exception.lottery.LotteryNumberOptionSizeException;
 import com.pitropatro.unitto.repository.dto.User;
 import com.pitropatro.unitto.service.LotteryService;
@@ -54,5 +51,15 @@ public class LotteryController {
                 userInfo,
                 lotteryUniqueNumberConfirmDto.getLotteryNumbers(),
                 lotteryUniqueNumberConfirmDto.getConfirm());
+    }
+
+    @RequestMapping(value="/lottery-round", method = RequestMethod.GET)
+    public Long getLotteryRound(){
+        return lotteryService.getLotteryRound();
+    }
+
+    @RequestMapping(value="/lottery-round-number", method = RequestMethod.GET)
+    public LotteryRoundNumberDto getLotteryRoundNumber(@RequestParam("round") String round){
+        return lotteryService.getLotteryRoundNumber(round);
     }
 }
