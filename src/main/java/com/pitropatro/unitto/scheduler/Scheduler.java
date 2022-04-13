@@ -18,13 +18,6 @@ public class Scheduler {
         this.redisRepository = redisRepository;
     }
 
-    // TODO : 테스트 코드 삭제 예정
-    // cron = "초 분 시 일 월 요일"
-    @Scheduled(cron = "10 * * * * *")
-    public void schedulerTest(){
-        System.out.println("*****************SCHEDULER Current Time : "+ new Date());
-    }
-
     // 0초 0분 20시  토요일
     @Scheduled(cron = "0 0 20 * * 6")
     public void resetWeekScheduler(){

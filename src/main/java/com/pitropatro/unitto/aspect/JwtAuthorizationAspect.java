@@ -28,8 +28,6 @@ public class JwtAuthorizationAspect {
 
     @Around("@annotation(tokenRequired)")
     public Object authenticateJwt(ProceedingJoinPoint joinPoint, TokenRequired tokenRequired) throws Throwable {
-        // TODO: 출력 지우기
-        System.out.println("************************Authenticate JWT************************");
 
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
